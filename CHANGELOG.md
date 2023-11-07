@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.2.1+1
+
+- Support null-safety
+- Bump SDK constraints and dependencies version
+
 ## 0.2.1
 
 - Fix cases where adding negative days worked incorrectly.

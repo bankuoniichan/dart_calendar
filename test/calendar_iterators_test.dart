@@ -1,5 +1,5 @@
-import 'package:test/test.dart';
 import 'package:date_calendar/date_calendar.dart';
+import 'package:test/test.dart';
 
 void main() {
   test('Day iterator tests', () {

@@ -48,7 +48,7 @@ const List<int> _sakamotoHelper = const <int>[
 /// Represents a single day in the Gregorian Calendar
 class GregorianCalendar implements Calendar {
   /// Setting any of these to null treats them as 1 or 0 (year)
-  GregorianCalendar(int year, [int month = 1, int day = 1]) {
+  GregorianCalendar(this._year, [int month = 1, int day = 1]) {
     if (year < 0) {
       throw new RangeError('Year must be positive');
     }
@@ -58,7 +58,6 @@ class GregorianCalendar implements Calendar {
     if (month == 0) {
       month = 1;
     }
-    _year = year;
     _month = 0;
     _day = 0;
     _addMonths(month - 1);
@@ -72,8 +71,7 @@ class GregorianCalendar implements Calendar {
       : this(dt ~/ 10000, (dt ~/ 100) % 100, dt % 100);
 
   /// Creates a new Date object from the [DateTime] passed in.
-  GregorianCalendar.fromDateTime(DateTime dt)
-      : this(dt?.year, dt?.month, dt?.day);
+  GregorianCalendar.fromDateTime(DateTime dt) : this(dt.year, dt.month, dt.day);
 
   /// Produces a new Date object from [DateTime] using `now()`
   GregorianCalendar.now() : this.fromDateTime(new DateTime.now());
@@ -81,7 +79,10 @@ class GregorianCalendar implements Calendar {
   /// Produces a new Date object from [DateTime] using `.now().toUtc()`
   GregorianCalendar.utc() : this.fromDateTime(new DateTime.now().toUtc());
 
-  int _month, _day, _year;
+  late int _month;
+  late int _day;
+  int _year;
+
   @override
   int get month => _month + 1;
   @override
@@ -144,7 +145,7 @@ class GregorianCalendar implements Calendar {
     return copy().._addDays(days);
   }
 
-  void _addDays(int days) {
+  void _addDays(int? days) {
     _day += days ?? 0;
 
     while (_day < 0) {
@@ -171,7 +172,7 @@ class GregorianCalendar implements Calendar {
     return copy().._addMonths(months, clamp: true);
   }
 
-  void _addMonths(int months, {bool clamp = false}) {
+  void _addMonths(int? months, {bool clamp = false}) {
     final bool wasLastDayInMonth = _day == monthLength - 1;
 
     _month += months ?? 0;
@@ -220,7 +221,7 @@ class GregorianCalendar implements Calendar {
       throw new UnsupportedError(
           'Comparing Gregorian and non-Gregorian dates not supported at this time');
     }
-    return toInt().compareTo(other?.toInt());
+    return toInt().compareTo(other.toInt());
   }
 
   /// ISO8061 compatible string version of this date, e.g. 2018-02-03
@@ -266,7 +267,7 @@ class GregorianCalendar implements Calendar {
   /// Will get the nth occurrence of the weekday of month in year
   ///
   /// Returns null if there are not n many weekdays in the month (e.g. the 6th Monday of any month)
-  static GregorianCalendar getWeekdayOfMonth(
+  static GregorianCalendar? getWeekdayOfMonth(
       int year, int month, int weekday, int nth) {
     if (nth < 0) {
       throw new RangeError('nth $nth invalid must be positive');
@@ -293,8 +294,10 @@ class GregorianCalendar implements Calendar {
     return dt;
   }
 
-  static List<GregorianCalendar> getWeekdaysFromWeek(
-      GregorianCalendar base, WeekdayMask weekdays) {
+  static List<GregorianCalendar>? getWeekdaysFromWeek(
+    GregorianCalendar base,
+    WeekdayMask? weekdays,
+  ) {
     if (weekdays == null || weekdays.hasAny == false) {
       return null;
     }

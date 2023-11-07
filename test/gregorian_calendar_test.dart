@@ -1,6 +1,5 @@
-import 'package:test/test.dart';
-
 import 'package:date_calendar/date_calendar.dart';
+import 'package:test/test.dart';
 
 void main() {
   test('addDays', () {
@@ -21,7 +20,7 @@ void main() {
     final WeekdayMask weekdaysList =
         new WeekdayMask.fromIterable(const <int>[7, 2, 4, 5]);
     final List<GregorianCalendar> days = GregorianCalendar.getWeekdaysFromWeek(
-        new GregorianCalendar(2018, 2, 24), weekdaysList);
+        new GregorianCalendar(2018, 2, 24), weekdaysList)!;
     expect(days.length, equals(weekdaysList.numberOfDaysSelected));
     expect(
         days,
